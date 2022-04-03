@@ -4,6 +4,7 @@ const express = require('express');
 const session = require('express-session');
 const exphbs = require('express-handlebars');
 const routes = require('./controllers');
+const helpers = require('./utils/helpers');
 
 // Initialize the server
 const app = express();
@@ -28,8 +29,11 @@ const sess = {
 // Tell the app to use Express Session for the session handling
 app.use(session(sess));
 
+// Initialize handlebars for the html templates
+const hbs = exphbs.create({ helpers });
+
 // Set handlebars as the template engine for the server
-app.engine('handlebars');
+app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 
 app.use(express.json());
